@@ -1,8 +1,15 @@
-IF (HAVE_STL)
-    PLAYERDRIVER_OPTION (epuck build_epuck ON)
-ELSE (HAVE_STL)
-    PLAYERDRIVER_OPTION (epuck build_epuck OFF "STL not found")
-ENDIF (HAVE_STL)
+SET(CMAKE_MODULE_PATH /usr/share/cmake/Modules)
+INCLUDE(UsePlayerPlugin)
 
-PLAYERDRIVER_REJECT_OS (epuck build_epuck PLAYER_OS_WIN)
-PLAYERDRIVER_ADD_DRIVER (epuck build_epuck SOURCES epuckCamera.cpp epuckDriver.cpp epuckInterface.cpp epuckIR.cpp epuckLEDs.cpp epuckPosition2d.cpp serialPort.cpp)
+SET(epuckplayer_SRCS epuckCamera.cpp
+                     epuckDriver.cpp
+                     epuckInterface.cpp
+                     epuckIR.cpp
+                     epuckLEDs.cpp
+                     epuckPosition2d.cpp
+                     serialPort.cpp)
+
+PLAYER_ADD_PLUGIN_DRIVER(epuckplayer SOURCES ${epuckplayer_SRCS})
+
+INSTALL(TARGETS epuckplayer
+        LIBRARY DESTINATION lib)
